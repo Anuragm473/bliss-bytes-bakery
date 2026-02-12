@@ -1,15 +1,23 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { updateOrderStatus } from "@/src/lib/orders";
 
+type Context = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: Context
 ) {
   try {
-    const body = await req.json();
+    const { id } = await context.params;
+
+    const body = await request.json();
 
     const updated = await updateOrderStatus(
-      params.id,
+      id,
       body.status
     );
 
