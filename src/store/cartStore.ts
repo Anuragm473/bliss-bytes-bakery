@@ -62,7 +62,7 @@ export const useCartStore = create<CartStore>()(
         ),
     }),
     {
-      name: "bliss-bytes-cart",
+      name: "bliss-bites-cart",
     }
   )
 );

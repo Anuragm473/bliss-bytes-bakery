@@ -156,7 +156,7 @@ export default function ProductDetails({ product }: { product: Product }) {
 
         <p className="mt-4 text-gray-700 leading-relaxed">
           Looking for premium eggless cake delivery in Kolkata?
-          Bliss Bytes Bakery offers freshly baked cakes under ₹1000
+          Bliss bites Bakery offers freshly baked cakes under ₹1000
           with same-day delivery across Salt Lake, New Town,
           Gariahat, Dumdum and nearby areas.
         </p>

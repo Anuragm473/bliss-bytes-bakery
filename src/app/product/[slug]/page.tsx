@@ -18,7 +18,7 @@ export async function generateMetadata(
 
   if (!product) {
     return {
-      title: "Product Not Found | Bliss Bytes Bakery",
+      title: "Product Not Found | Bliss bites Bakery",
     };
   }
 

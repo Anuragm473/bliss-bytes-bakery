@@ -7,7 +7,7 @@ import Image from "next/image"; // ← separate component
 // import type { Metadata } from "next";
 
 // export const metadata: Metadata = {
-//   title: "Same-Day Eggless Cake Delivery in Kolkata | Bliss Bytes Bakery",
+//   title: "Same-Day Eggless Cake Delivery in Kolkata | Bliss bites Bakery",
 //   description: "Order premium eggless custom cakes under ₹1000 in Kolkata. Same-day delivery in Salt Lake, New Town, Dumdum & more.",
 // };
 
@@ -107,7 +107,7 @@ const TESTIMONIALS = [
     name: "Rahul M.",
     area: "New Town",
     stars: 5,
-    text: "Ordered a photo cake for our anniversary — the quality was exceptional. Will definitely order again from Bliss Bytes!",
+    text: "Ordered a photo cake for our anniversary — the quality was exceptional. Will definitely order again from Bliss bites!",
   },
   {
     name: "Ananya B.",
@@ -124,7 +124,7 @@ const FAQS = [
   },
   {
     q: "Are all your cakes 100% eggless?",
-    a: "Absolutely. Every single cake at Bliss Bytes Bakery is freshly baked without eggs — perfect for vegetarians and those with egg allergies.",
+    a: "Absolutely. Every single cake at Bliss bites Bakery is freshly baked without eggs — perfect for vegetarians and those with egg allergies.",
   },
   {
     q: "Which areas do you deliver to?",
@@ -528,7 +528,7 @@ export default function HomePage() {
             <h2 className="font-serif text-[clamp(26px,3.5vw,40px)] font-bold text-[#2d1b0e]">
               Why Kolkata Trusts{" "}
               <em className="text-[#c1440e] not-italic font-serif italic">
-                Bliss Bytes
+                Bliss bites
               </em>
             </h2>
           </div>
@@ -576,7 +576,7 @@ export default function HomePage() {
               Eggless Cake Delivery Across Kolkata
             </h2>
             <p className="text-[15.5px] text-[#5c3d2e] leading-[1.85] mb-5">
-              Looking for reliable eggless cake delivery in Kolkata? Bliss Bytes
+              Looking for reliable eggless cake delivery in Kolkata? Bliss bites
               Bakery offers fresh birthday cakes, anniversary cakes, photo cakes
               and fully custom creations — all under ₹1000, with same-day
               delivery. We proudly serve{" "}
@@ -594,7 +594,7 @@ export default function HomePage() {
             </p>
             <p className="text-[15.5px] text-[#5c3d2e] leading-[1.85]">
               Whether you're celebrating a birthday in New Town, an anniversary
-              in Gariahat, or surprising someone in Dumdum — Bliss Bytes Bakery
+              in Gariahat, or surprising someone in Dumdum — Bliss bites Bakery
               is Kolkata's most loved destination for premium eggless cakes.
             </p>
           </div>
@@ -732,7 +732,7 @@ export default function HomePage() {
         ════════════════════════════════════════════════ */}
         <footer className="bg-[#2d1b0e] text-[#e8c5a0] py-12 px-6 text-center">
           <p className="font-serif text-[24px] font-bold text-[#fffbf8] mb-1">
-            Bliss Bytes Bakery
+            Bliss bites Bakery
           </p>
           <p className="text-[13px] text-[#b8977a] mb-6">
             Premium Eggless Cakes · Same‑Day Delivery · Kolkata
@@ -756,7 +756,7 @@ export default function HomePage() {
             ))}
           </div>
           <p className="text-[12px] text-[#7a5c4e]">
-            © {new Date().getFullYear()} Bliss Bytes Bakery. All rights
+            © {new Date().getFullYear()} Bliss bites Bakery. All rights
             reserved.
           </p>
         </footer>

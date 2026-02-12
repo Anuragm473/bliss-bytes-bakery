@@ -42,7 +42,7 @@ export default function Navbar() {
         {/* ── Logo ── */}
         <Link href="/" className="flex-shrink-0 no-underline leading-none">
           <span className="block font-serif text-[22px] font-bold text-[#c1440e] tracking-tight">
-            Bliss Bytes
+            Bliss bites
           </span>
           <span className="block text-[10px] font-semibold tracking-[2.5px] uppercase text-[#b8977a] -mt-0.5">
             Bakery

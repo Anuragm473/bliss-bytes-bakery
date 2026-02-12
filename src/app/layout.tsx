@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Bliss Bytes Bakery | Same-Day Eggless Cake Delivery in Kolkata",
+  title: "Bliss bites Bakery | Same-Day Eggless Cake Delivery in Kolkata",
   description:
     "Order budget-friendly eggless custom cakes in Kolkata. Same-day delivery available. Cakes under ₹1000.",
 };
