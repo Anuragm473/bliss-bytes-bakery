@@ -1,11 +1,18 @@
-import Navbar from "../components/Navbar";
-import "./globals.css";
 import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
+import "./globals.css";
+import Navbar from "../components/Navbar";
+import FloatingWhatsApp from "../components/FloatingWhatsApp";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Bliss bites Bakery | Same-Day Eggless Cake Delivery in Kolkata",
-  description:
-    "Order budget-friendly eggless custom cakes in Kolkata. Same-day delivery available. Cakes under ₹1000.",
+  title: "Bliss bites Bakery",
+  description: "Premium Eggless Cakes in Kolkata",
 };
 
 export default function RootLayout({
@@ -15,9 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-[#FFF8F0] text-gray-900">
-        <Navbar/>
+      <body className={poppins.className}>
+         <Navbar/>
         {children}
+        <FloatingWhatsApp/>
       </body>
     </html>
   );

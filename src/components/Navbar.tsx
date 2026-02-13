@@ -6,7 +6,7 @@ import { useCartStore } from "@/src/store/cartStore";
 
 const NAV_LINKS = [
   { href: "/cakes",                          label: "Cakes"        },
-  { href: "/birthday-cakes",                 label: "Birthday"     },
+  { href: "/cakes/category/birthday",                 label: "Birthday"     },
   { href: "/photo-cakes",                    label: "Photo Cakes"  },
   { href: "/customize-cake",                 label: "Customize"    },
   { href: "/same-day-cake-delivery-kolkata", label: "Same‑Day"     },
@@ -67,34 +67,40 @@ export default function Navbar() {
 
         {/* ── Desktop right actions ── */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Cart */}
-          <Link
-            href="/cart"
-            className="relative flex items-center gap-1.5 bg-gradient-to-r from-[#c1440e] to-[#f4a261]
-                       text-white text-[13px] font-bold px-5 py-2.5 rounded-full
-                       shadow-[0_4px_16px_rgba(193,68,14,0.25)]
-                       hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(193,68,14,0.32)]
-                       transition-all duration-300"
-          >
-            <span>🛒</span>
-            <span>Cart</span>
-            {cartItems.length > 0 && (
-              <span className="flex items-center justify-center w-[18px] h-[18px] rounded-full
-                               bg-[#2d1b0e] text-white text-[10px] font-extrabold">
-                {cartItems.length}
-              </span>
-            )}
-          </Link>
 
-          {/* Admin — subtle */}
-          <Link
-            href="/admin"
-            className="text-[11.5px] font-medium text-[#b8977a] hover:text-[#c1440e]
-                       transition-colors duration-200 tracking-wide"
-          >
-            Admin
-          </Link>
-        </div>
+  {/* WhatsApp Primary CTA */}
+  <Link
+    href="https://wa.me/91XXXXXXXXXX?text=Hey%2C%20I%20have%20a%20requirement%20for%20customized%20cake"
+    target="_blank"
+    className="bg-gradient-to-r from-[#25D366] to-[#128C7E]
+               text-white text-[13px] font-bold px-5 py-2.5 rounded-full
+               shadow hover:-translate-y-0.5 hover:shadow-lg
+               transition-all duration-200"
+  >
+    WhatsApp
+  </Link>
+
+  {/* Cart */}
+  <Link
+    href="/cart"
+    className="relative flex items-center gap-1.5 bg-gradient-to-r from-[#c1440e] to-[#f4a261]
+               text-white text-[13px] font-bold px-5 py-2.5 rounded-full
+               shadow-[0_4px_16px_rgba(193,68,14,0.25)]
+               hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(193,68,14,0.32)]
+               transition-all duration-300"
+  >
+    <span>🛒</span>
+    <span>Cart</span>
+    {cartItems.length > 0 && (
+      <span className="flex items-center justify-center w-[18px] h-[18px] rounded-full
+                       bg-[#2d1b0e] text-white text-[10px] font-extrabold">
+        {cartItems.length}
+      </span>
+    )}
+  </Link>
+
+</div>
+
 
         {/* ── Mobile hamburger ── */}
         <button
@@ -165,6 +171,7 @@ export default function Navbar() {
           </Link>
         </div>
       </div>
+      
     </nav>
   );
 }

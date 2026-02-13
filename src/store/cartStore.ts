@@ -6,6 +6,7 @@ import { persist } from "zustand/middleware";
 export type CartItem = {
   productId: string;
   title: string;
+  image:string;
   size: string;
   flavor: string;
   price: number;

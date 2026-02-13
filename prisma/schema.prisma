@@ -30,21 +30,43 @@ model Product {
 
 model Order {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderNumber   String   @unique
+
   name          String
   phone         String
   address       String
   area          String
-
-  items         Json     // <-- ADD THIS
-
-  totalPrice    Float
-  paymentMethod String
-  paymentStatus String
-  orderStatus   String
+  landmark      String?
+  pincode       String
 
   deliveryDate  DateTime
-  deliverySlot  String
+  deliveryTime  String
+
+  items         Json
+
+  subtotal      Float
+  deliveryFee   Float
+  tax           Float
+  totalPrice    Float
+
+  paymentMethod String   @default("cod")
+  status        String   @default("pending")
 
   createdAt     DateTime @default(now())
+}
+
+
+model ContactEnquiry {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  phone       String
+  email       String?
+  message     String?
+  occasion    String?
+  budget      String?
+  deliveryDate String?
+  imageUrl    String?
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
 }
 

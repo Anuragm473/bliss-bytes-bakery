@@ -3,71 +3,13 @@
 
 import Link from "next/link";
 import Image from "next/image"; // ← separate component
-// import { getFeaturedProducts } from "@/src/lib/products";
-// import type { Metadata } from "next";
+import { getFeaturedProducts } from "@/src/lib/products";
+import type { Metadata } from "next";
 
-// export const metadata: Metadata = {
-//   title: "Same-Day Eggless Cake Delivery in Kolkata | Bliss bites Bakery",
-//   description: "Order premium eggless custom cakes under ₹1000 in Kolkata. Same-day delivery in Salt Lake, New Town, Dumdum & more.",
-// };
-
-/* ─── Mock data (swap with real getFeaturedProducts(6)) ──────────────────── */
-const PRODUCTS = [
-  {
-    id: 1,
-    slug: "classic-vanilla-dream",
-    title: "Classic Vanilla Dream",
-    category: "birthday",
-    flavors: ["Vanilla", "Butterscotch", "Pineapple"],
-    sizes: { "500g": 499, "1kg": 849 },
-    images: [],
-  },
-  {
-    id: 2,
-    slug: "chocolate-truffle-bliss",
-    title: "Chocolate Truffle Bliss",
-    category: "anniversary",
-    flavors: ["Chocolate", "Dark Chocolate", "Mocha"],
-    sizes: { "500g": 549, "1kg": 899 },
-    images: [],
-  },
-  {
-    id: 3,
-    slug: "strawberry-photo-cake",
-    title: "Strawberry Photo Cake",
-    category: "photo",
-    flavors: ["Strawberry", "Mixed Fruit", "Lychee"],
-    sizes: { "500g": 599, "1kg": 950 },
-    images: [],
-  },
-  {
-    id: 4,
-    slug: "red-velvet-celebration",
-    title: "Red Velvet Celebration",
-    category: "birthday",
-    flavors: ["Red Velvet", "Cream Cheese"],
-    sizes: { "500g": 579, "1kg": 929 },
-    images: [],
-  },
-  {
-    id: 5,
-    slug: "mango-delight",
-    title: "Mango Delight",
-    category: "seasonal",
-    flavors: ["Alphonso Mango", "Kesar Mango"],
-    sizes: { "500g": 529, "1kg": 879 },
-    images: [],
-  },
-  {
-    id: 6,
-    slug: "black-forest-royal",
-    title: "Black Forest Royal",
-    category: "anniversary",
-    flavors: ["Cherry", "Chocolate", "Cream"],
-    sizes: { "500g": 549, "1kg": 899 },
-    images: [],
-  },
-];
+export const metadata: Metadata = {
+  title: "Same-Day Eggless Cake Delivery in Kolkata | Bliss bites Bakery",
+  description: "Order premium eggless custom cakes under ₹1000 in Kolkata. Same-day delivery in Salt Lake, New Town, Dumdum & more.",
+};
 
 const CATEGORIES = [
   {
@@ -154,7 +96,17 @@ function Stars({ count = 5 }: { count?: number }) {
   );
 }
 
-function ProductCard({ product }: { product: (typeof PRODUCTS)[0] }) {
+type Product = {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  flavors: string[];
+  sizes: Record<string, number>;
+  images: string[];
+};
+
+function ProductCard({ product,index }: { product: Product,index:number }) {
   const startingPrice = Math.min(...Object.values(product.sizes));
 
   const gradients = [
@@ -163,7 +115,7 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[0] }) {
     "from-[#e8d5f5] to-[#fde2e4]",
     "from-[#d4f0f0] to-[#fde2e4]",
   ];
-  const grad = gradients[product.id % gradients.length];
+  const grad = gradients[index % gradients.length];
 
   return (
     <div
@@ -258,16 +210,13 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 
-export default function HomePage() {
-  // const products = await getFeaturedProducts(6); // ← uncomment for real data
+export default async function HomePage() {
+  const products = await getFeaturedProducts(6); // ← uncomment for real data
 
   return (
     <>
       {/* Google Fonts */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Lato:wght@400;500;600;700&display=swap');
-        .font-serif  { font-family: 'Playfair Display', Georgia, serif !important; }
-        .font-sans   { font-family: 'Lato', sans-serif !important; }
         body         { font-family: 'Lato', sans-serif; background: #fffbf8; }
         @keyframes shimmer {
           0%   { background-position: -200% center; }
@@ -500,9 +449,10 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-              {PRODUCTS.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+              {products?.map((product,index) => (
+  <ProductCard key={product.id} product={product} index={index}/>
+))}
+
             </div>
 
             <div className="text-center mt-14">

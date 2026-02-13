@@ -1,31 +1,76 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateOrderStatus } from "@/src/lib/orders";
+import { prisma } from "@/src/lib/prisma";
 
-type Context = {
-  params: Promise<{
-    id: string;
-  }>;
+type Params = {
+  params: Promise<{ id: string }>;
 };
 
-export async function PATCH(
-  request: NextRequest,
-  context: Context
+// ─────────────────────────────────────────
+// GET → Single Order
+// ─────────────────────────────────────────
+export async function GET(
+  req: NextRequest,
+  { params }: Params
 ) {
+  const { id } = await params;
+
   try {
-    const { id } = await context.params;
+    const order = await prisma.order.findUnique({
+      where: { id },
+    });
 
-    const body = await request.json();
+    if (!order) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
 
-    const updated = await updateOrderStatus(
-      id,
-      body.status
-    );
+    return NextResponse.json(order);
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
+
+// ─────────────────────────────────────────
+// PATCH → Update Order (status etc)
+// ─────────────────────────────────────────
+export async function PATCH(
+  req: NextRequest,
+  { params }: Params
+) {
+  const { id } = await params;
+  const body = await req.json();
+
+  try {
+    const updated = await prisma.order.update({
+      where: { id },
+      data: {
+        status: body.status,
+      },
+    });
 
     return NextResponse.json(updated);
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to update order" },
-      { status: 500 }
-    );
+  } catch {
+    return NextResponse.json({ error: "Update failed" }, { status: 500 });
+  }
+}
+
+
+// ─────────────────────────────────────────
+// DELETE → Delete Order
+// ─────────────────────────────────────────
+export async function DELETE(
+  req: NextRequest,
+  { params }: Params
+) {
+  const { id } = await params;
+
+  try {
+    await prisma.order.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }
