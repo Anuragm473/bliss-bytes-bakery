@@ -73,7 +73,7 @@ export default function ProductDetails({
   product: any;
   relatedProducts?: Product[];
 }) {
-  const sizes:any = product.sizes;
+  const sizes = product.sizes as Record<string, number>;
   const [selectedSize, setSelectedSize] = useState(Object.keys(sizes)[0]);
   const [selectedFlavor, setSelectedFlavor] = useState(product.flavors[0]);
   const [quantity, setQuantity] = useState(1);
@@ -81,19 +81,21 @@ export default function ProductDetails({
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const addItem = useCartStore((state) => state.addItem);
   const price = sizes[selectedSize];
-  const startingPrice = Math.min(...Object.values(sizes));
+const startingPrice = Math.min(...Object.values(sizes));
+
 
   const handleAddToCart = () => {
     console.log(product)
     addItem({
-      productId: product.id,
-      title: product.title,
-      size: selectedSize,
-      image:product.images[0],
-      flavor: selectedFlavor,
-      price,
-      quantity,
-    });
+    productId: product.id,
+    title: product.title,
+    category: product.category, // ✅ REQUIRED
+    size: selectedSize,
+    image: product.images?.[0] || "",
+    flavor: selectedFlavor,
+    price: sizes[selectedSize],
+    quantity,
+  });
   };
 
   return (

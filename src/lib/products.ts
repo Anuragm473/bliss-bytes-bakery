@@ -1,20 +1,29 @@
 import { prisma } from "./prisma";
 
 export async function getAllProducts() {
-  return prisma.product.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+  const products = await prisma.product.findMany({
+    orderBy: { createdAt: "desc" },
   });
+
+  return products.map((p) => ({
+    ...p,
+    sizes: p.sizes as Record<string, number>,
+  }));
 }
 
+
 export async function getFeaturedProducts(limit = 6) {
-  return prisma.product.findMany({
+  const products=await prisma.product.findMany({
     take: limit,
     orderBy: {
       createdAt: "desc",
     },
   });
+
+  return products.map((p) => ({
+    ...p,
+    sizes: p.sizes as Record<string, number>,
+  }));
 }
 
 export async function getRelatedProducts(

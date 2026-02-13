@@ -1,31 +1,58 @@
 import { prisma } from "./prisma";
+import { randomUUID } from "crypto";
 
 type CreateOrderInput = {
   name: string;
   phone: string;
   address: string;
   area: string;
-  items: any;
-  totalPrice: number;
-  paymentMethod: "COD" | "ONLINE";
+  landmark?: string;
+  pincode: string;
+
   deliveryDate: Date;
-  deliverySlot: string;
+  deliveryTime: string;
+
+  items: any;
+
+  subtotal: number;
+  deliveryFee: number;
+  tax: number;
+  totalPrice: number;
+
+  paymentMethod?: "cod"; // optional because default exists
 };
+
+function generateOrderNumber() {
+  // Example: BB-20240215-8F3A
+  const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const random = randomUUID().slice(0, 4).toUpperCase();
+  return `BB-${date}-${random}`;
+}
 
 export async function createOrder(data: CreateOrderInput) {
   return prisma.order.create({
     data: {
+      orderNumber: generateOrderNumber(),
+
       name: data.name,
       phone: data.phone,
       address: data.address,
       area: data.area,
-      items: data.items,
-      totalPrice: data.totalPrice,
-      paymentMethod: data.paymentMethod,
-      paymentStatus: "PENDING",
-      orderStatus: "PLACED",
+      landmark: data.landmark,
+      pincode: data.pincode,
+
       deliveryDate: data.deliveryDate,
-      deliverySlot: data.deliverySlot,
+      deliveryTime: data.deliveryTime,
+
+      items: data.items,
+
+      subtotal: data.subtotal,
+      deliveryFee: data.deliveryFee,
+      tax: data.tax,
+      totalPrice: data.totalPrice,
+
+      paymentMethod: "cod", // enforce COD
+      status: "pending",    // matches schema default
     },
   });
 }
@@ -38,12 +65,26 @@ export async function getAllOrders() {
   });
 }
 
+export async function getOrderById(id: string) {
+  return prisma.order.findUnique({
+    where: { id },
+  });
+}
+
 export async function updateOrderStatus(
   id: string,
   status: string
 ) {
   return prisma.order.update({
     where: { id },
-    data: { orderStatus: status },
+    data: {
+      status,
+    },
+  });
+}
+
+export async function deleteOrder(id: string) {
+  return prisma.order.delete({
+    where: { id },
   });
 }

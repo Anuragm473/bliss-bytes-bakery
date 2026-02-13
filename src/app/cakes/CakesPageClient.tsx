@@ -121,16 +121,21 @@ export default function CakesPageClient({ products }: { products: any[] }) {
     }
 
     list = list.filter((p:any) => {
-      const min = Math.min(...Object.values(p.sizes));
+      const sizeValues = Object.values(p.sizes as Record<string, number>);
+const min = Math.min(...sizeValues);
       return min <= maxPrice;
     });
 
     if (sortBy === "low-high") {
-      list.sort(
-        (a:any, b:any) =>
-          Math.min(...Object.values(a.sizes)) -
-          Math.min(...Object.values(b.sizes))
-      );
+      list.sort((a: any, b: any) => {
+  const aSizes = Object.values(a.sizes as Record<string, number>).map(Number);
+  const bSizes = Object.values(b.sizes as Record<string, number>).map(Number);
+
+  const aMin = aSizes.length ? Math.min(...aSizes) : 0;
+  const bMin = bSizes.length ? Math.min(...bSizes) : 0;
+
+  return aMin - bMin;
+});
     } else if (sortBy === "newest") {
       list.sort(
         (a, b) =>

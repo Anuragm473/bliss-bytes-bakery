@@ -5,19 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import type { Metadata } from "next";
+import { CartItem } from "@/src/store/cartStore";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-interface CartItem {
-  id: string;
-  title: string;
-  image: string;
-  size: string;
-  flavor: string;
-  customMessage?: string;
-  price: number;
-  quantity: number;
-  category: string;
-}
 
 interface RelatedProduct {
   id: string;
@@ -373,7 +363,7 @@ export default function CartPage() {
   const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
 
   const subtotal = getTotal();
-  const totalItems = items.reduce((acc: number, i: CartItem) => acc + i.quantity, 0);
+  const totalItems = items.reduce((acc, i) => acc + i.quantity, 0);
 
   // Fetch related products from first item's category
   useEffect(() => {
@@ -439,7 +429,7 @@ export default function CartPage() {
 
                 {items.map((item: CartItem, index: number) => (
                   <CartItemCard
-                    key={`${item.id}-${index}`}
+                    key={`${item.productId}-${item.size}-${item.flavor}-${index}`}
                     item={item}
                     index={index}
                     onRemove={removeItem}

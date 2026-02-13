@@ -1,15 +1,18 @@
 import { prisma } from "@/src/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
+/* ───────────────────────── PATCH (Update Product) ───────────────────────── */
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const body = await req.json();
+    const { id } = await context.params;
+    const body = await request.json();
 
-    const updated = await prisma.product.update({
-      where: { id: params.id },
+    const updatedProduct = await prisma.product.update({
+      where: { id },
       data: {
         title: body.title,
         slug: body.slug,
@@ -23,7 +26,7 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(updated);
+    return NextResponse.json(updatedProduct);
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to update product" },
@@ -32,19 +35,52 @@ export async function PATCH(
   }
 }
 
+/* ───────────────────────── DELETE ───────────────────────── */
+
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
+
     await prisma.product.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
-    return NextResponse.json({ message: "Deleted successfully" });
+    return NextResponse.json({ message: "Product deleted successfully" });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to delete product" },
+      { status: 500 }
+    );
+  }
+}
+
+/* ───────────────────────── GET BY ID (Optional but recommended) ───────────────────────── */
+
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+
+    const product = await prisma.product.findUnique({
+      where: { id },
+    });
+
+    if (!product) {
+      return NextResponse.json(
+        { error: "Product not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(product);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to fetch product" },
       { status: 500 }
     );
   }
