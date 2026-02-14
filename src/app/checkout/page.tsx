@@ -23,7 +23,7 @@ function CheckoutStructuredData() {
         "@type": "Organization",
         name: "Bliss Bites Bakery",
         url: "https://blissbitsbakery.com",
-        telephone: "+91-XXXXXXXXXX",
+        telephone: "+91-9123743680",
         address: {
           "@type": "PostalAddress",
           addressLocality: "Kolkata",
@@ -386,6 +386,7 @@ export default function CheckoutPage() {
           deliveryTime: form.deliveryTime,
           instructions: form.instructions,
           freeCandle: form.freeCandle,
+          deliveryFee:0,
           items,
           subtotal,
           delivery,
@@ -397,7 +398,7 @@ export default function CheckoutPage() {
       if (!res.ok) throw new Error("Order failed");
       const data = await res.json();
       clearCart();
-      router.push(`/success?orderId=${data.orderId}`);
+      router.push(`/my-orders`);
     } catch (err) {
       console.error(err);
       setIsSubmitting(false);

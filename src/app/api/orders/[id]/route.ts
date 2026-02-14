@@ -15,9 +15,11 @@ export async function GET(
   const { id } = await params;
 
   try {
+    console.log(id)
     const order = await prisma.order.findUnique({
       where: { id },
     });
+    console.log(order)
 
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });

@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+.hero-background {
+  background-image: url("/hero.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
