@@ -4,15 +4,25 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/src/store/cartStore";
 
-const NAV_LINKS = [
-  { href: "/cakes",           label: "Cakes"      },
-  { href: "/customize-cake",  label: "Customize"  },
-  { href: "/my-orders",       label: "My Orders"  },
-  { href: "/about-us",        label: "About Us"   },
+const CAKE_CATEGORIES = [
+  { href: "/cakes/category/birthday", label: "Birthday Cakes" },
+  { href: "/cakes/category/anniversary", label: "Anniversary Cakes" },
+  { href: "/cakes/category/photo", label: "Photo Cakes" },
+  { href: "/cakes/category/kids", label: "Kids Cakes" },
+  { href: "/cakes/category/wedding", label: "Wedding Cakes" },
 ];
 
+
+const NAV_LINKS = [
+  { href: "/cakes", label: "Cakes", hasDropdown: true },
+  { href: "/customize-cake", label: "Customize" },
+  { href: "/my-orders", label: "My Orders" },
+  { href: "/about-us", label: "About Us" },
+];
+
+
 export default function Navbar() {
-  const [open,     setOpen]     = useState(false);
+  const [open, setOpen] = useState<boolean | "cakes">(false);
   const [scrolled, setScrolled] = useState(false);
   const cartItems = useCartStore((state) => state.items);
 
@@ -59,20 +69,46 @@ export default function Navbar() {
 
         {/* ── Desktop center links ── */}
         <div className="hidden md:flex items-center gap-7 absolute left-1/2 -translate-x-1/2">
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="relative text-[13.5px] font-semibold text-[#5c3d2e] tracking-wide
-                         after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0
-                         after:bg-[#f4a261] after:rounded-full after:transition-all after:duration-300
-                         hover:text-[#c1440e] hover:after:w-full transition-colors duration-200
-                         whitespace-nowrap"
-            >
-              {label}
-            </Link>
-          ))}
+  {NAV_LINKS.map(({ href, label, hasDropdown }) => (
+    <div key={href} className="relative group">
+      
+      <Link
+        href={href}
+        className="relative text-[13.5px] font-semibold text-[#5c3d2e] tracking-wide
+                   hover:text-[#c1440e] transition-colors duration-200
+                   whitespace-nowrap flex items-center gap-1"
+      >
+        {label}
+        {hasDropdown && <span className="text-xs">▾</span>}
+      </Link>
+
+      {/* Dropdown */}
+      {hasDropdown && (
+        <div className="absolute left-1/2 -translate-x-1/2 mt-4 w-56
+                        bg-white rounded-2xl shadow-xl border border-[#f3e8df]
+                        opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                        transition-all duration-200 z-50">
+          
+          <div className="py-3">
+            {CAKE_CATEGORIES.map((cat) => (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className="block px-5 py-2.5 text-sm font-semibold text-[#5c3d2e]
+                           hover:bg-[#fde2e4] hover:text-[#c1440e]
+                           transition-colors duration-200"
+              >
+                {cat.label}
+              </Link>
+            ))}
+          </div>
+
         </div>
+      )}
+    </div>
+  ))}
+</div>
+
 
         {/* ── Desktop right actions ── */}
         <div className="hidden md:flex items-center gap-3 flex-shrink-0">
@@ -142,17 +178,48 @@ export default function Navbar() {
           ${open ? "max-h-[460px] opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div className="bg-[#fffbf8] border-t border-[#f3e8df] px-6 py-2 flex flex-col">
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              className="py-3.5 text-[15px] font-semibold text-[#2d1b0e] border-b border-[#f3e8df]
-                         hover:text-[#c1440e] transition-colors duration-200 last:border-b-0"
-            >
-              {label}
-            </Link>
-          ))}
+          {NAV_LINKS.map(({ href, label, hasDropdown }) =>
+  hasDropdown ? (
+    <div key={href} className="border-b border-[#f3e8df]">
+      
+      <button
+        onClick={() => setOpen(open === "cakes" ? false : "cakes")}
+        className="w-full flex justify-between items-center py-3.5
+                   text-[15px] font-semibold text-[#2d1b0e]"
+      >
+        <span>{label}</span>
+        <span className="text-sm">▾</span>
+      </button>
+
+      {/* Category links */}
+      <div className="pl-4 pb-2">
+        {CAKE_CATEGORIES.map((cat) => (
+          <Link
+            key={cat.href}
+            href={cat.href}
+            onClick={() => setOpen(false)}
+            className="block py-2 text-[14px] text-[#5c3d2e]
+                       hover:text-[#c1440e] transition-colors duration-200"
+          >
+            {cat.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <Link
+      key={href}
+      href={href}
+      onClick={() => setOpen(false)}
+      className="py-3.5 text-[15px] font-semibold text-[#2d1b0e]
+                 border-b border-[#f3e8df]
+                 hover:text-[#c1440e] transition-colors duration-200"
+    >
+      {label}
+    </Link>
+  )
+)}
+
 
           {/* Mobile WhatsApp */}
           <Link

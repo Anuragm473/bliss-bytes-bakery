@@ -81,21 +81,20 @@ export default function ProductDetails({
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const addItem = useCartStore((state) => state.addItem);
   const price = sizes[selectedSize];
-const startingPrice = Math.min(...Object.values(sizes));
-
+  const startingPrice = Math.min(...Object.values(sizes));
 
   const handleAddToCart = () => {
-    console.log(product)
+    console.log(product);
     addItem({
-    productId: product.id,
-    title: product.title,
-    category: product.category, // ✅ REQUIRED
-    size: selectedSize,
-    image: product.images?.[0] || "",
-    flavor: selectedFlavor,
-    price: sizes[selectedSize],
-    quantity,
-  });
+      productId: product.id,
+      title: product.title,
+      category: product.category, // ✅ REQUIRED
+      size: selectedSize,
+      image: product.images?.[0] || "",
+      flavor: selectedFlavor,
+      price: sizes[selectedSize],
+      quantity,
+    });
   };
 
   return (
@@ -125,7 +124,12 @@ const startingPrice = Math.min(...Object.values(sizes));
               "@type": "BreadcrumbList",
               itemListElement: [
                 { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-                { "@type": "ListItem", position: 2, name: "Cakes", item: "/cakes" },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Cakes",
+                  item: "/cakes",
+                },
                 { "@type": "ListItem", position: 3, name: product.title },
               ],
             },
@@ -263,7 +267,7 @@ const startingPrice = Math.min(...Object.values(sizes));
               {/* Thumbnail Strip */}
               {product.images?.length > 1 && (
                 <div className="flex gap-3 overflow-x-auto pb-1">
-                  {product.images.map((img:any, i:any) => (
+                  {product.images.map((img: any, i: any) => (
                     <button
                       key={i}
                       onClick={() => setActiveImage(i)}
@@ -367,7 +371,7 @@ const startingPrice = Math.min(...Object.values(sizes));
                   Select Size
                 </h2>
                 <div className="flex flex-wrap gap-2.5">
-                  {Object.entries(sizes).map(([size, sizePrice]:any) => (
+                  {Object.entries(sizes).map(([size, sizePrice]: any) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
@@ -379,8 +383,7 @@ const startingPrice = Math.min(...Object.values(sizes));
                               background:
                                 "linear-gradient(135deg, #6B2D2D 0%, #9B4040 100%)",
                               color: "#FFF",
-                              boxShadow:
-                                "0 4px 16px rgba(107,45,45,0.35)",
+                              boxShadow: "0 4px 16px rgba(107,45,45,0.35)",
                               transform: "translateY(-1px)",
                             }
                           : {
@@ -413,7 +416,7 @@ const startingPrice = Math.min(...Object.values(sizes));
                   Select Flavor
                 </h2>
                 <div className="flex flex-wrap gap-2.5">
-                  {product.flavors.map((flavor:any) => (
+                  {product.flavors.map((flavor: any) => (
                     <button
                       key={flavor}
                       onClick={() => setSelectedFlavor(flavor)}
@@ -425,8 +428,7 @@ const startingPrice = Math.min(...Object.values(sizes));
                               background:
                                 "linear-gradient(135deg, #E8826A 0%, #C45E4A 100%)",
                               color: "#FFF",
-                              boxShadow:
-                                "0 4px 16px rgba(228,130,106,0.4)",
+                              boxShadow: "0 4px 16px rgba(228,130,106,0.4)",
                               transform: "translateY(-1px)",
                             }
                           : {
@@ -546,7 +548,9 @@ const startingPrice = Math.min(...Object.values(sizes));
                   }}
                 >
                   <span>🎨</span>
-                  <span>Want to personalize this cake? Upload your photo →</span>
+                  <span>
+                    Want to personalize this cake? Upload your photo →
+                  </span>
                 </Link>
               )}
             </div>
@@ -584,7 +588,10 @@ const startingPrice = Math.min(...Object.values(sizes));
                   >
                     {h.title}
                   </h3>
-                  <p className="text-xs leading-relaxed" style={{ color: "#9B7B6E" }}>
+                  <p
+                    className="text-xs leading-relaxed"
+                    style={{ color: "#9B7B6E" }}
+                  >
                     {h.desc}
                   </p>
                 </div>
@@ -620,11 +627,11 @@ const startingPrice = Math.min(...Object.values(sizes));
               <p>
                 Looking for the perfect{" "}
                 <strong>eggless cake delivery in Kolkata</strong>? Bliss Bites
-                Bakery brings you freshly baked, premium-quality cakes under ₹1000
-                — delivered same-day right to your doorstep. Our{" "}
+                Bakery brings you freshly baked, premium-quality cakes under
+                ₹1000 — delivered same-day right to your doorstep. Our{" "}
                 <strong>{product.title}</strong> is crafted with the finest
-                ingredients, offering you a celebration-worthy taste without
-                any eggs.
+                ingredients, offering you a celebration-worthy taste without any
+                eggs.
               </p>
               <p>
                 We deliver across Kolkata including{" "}
@@ -782,7 +789,10 @@ const startingPrice = Math.min(...Object.values(sizes));
             >
               Order Now for Same-Day Delivery in Kolkata
             </h2>
-            <p className="text-sm mb-8" style={{ color: "rgba(255,230,225,0.9)" }}>
+            <p
+              className="text-sm mb-8"
+              style={{ color: "rgba(255,230,225,0.9)" }}
+            >
               Place your order before 4PM and receive it today — freshly baked,
               beautifully boxed.
             </p>
@@ -799,6 +809,37 @@ const startingPrice = Math.min(...Object.values(sizes));
             </button>
           </section>
         </main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: product.title,
+              image: product.images,
+              description: product.description,
+              sku: product.id,
+              brand: {
+                "@type": "Brand",
+                name: "Bliss Bites Bakery",
+              },
+              category: product.category,
+              offers: Object.entries(product.sizes).map(([size, price]) => ({
+                "@type": "Offer",
+                priceCurrency: "INR",
+                price,
+                availability: "https://schema.org/InStock",
+                url: `https://bliss-bites-bakery.vercel.app/product/${product.slug}`,
+                itemCondition: "https://schema.org/NewCondition",
+              })),
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "248",
+              },
+            }),
+          }}
+        />
       </div>
     </>
   );

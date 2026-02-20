@@ -10,7 +10,6 @@ type Props = {
 };
 
 // ─── Metadata (SEO) ──────────────────────────────────────────────────────────
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
@@ -25,17 +24,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const sizes = product.sizes as Record<string, number>;
   const startingPrice = Math.min(...Object.values(sizes));
   const primaryImage = product.images?.[0] ?? "";
+  const canonicalUrl = `https://bliss-bites-bakery.vercel.app/product/${slug}`;
 
-  const title = `${product.title} | Eggless Cake Delivery in Kolkata – Bliss Bites Bakery`;
-  const description = `Order ${product.title} online from Bliss Bites Bakery, Kolkata. 100% Eggless, starting ₹${startingPrice}. Same-day delivery to Salt Lake, New Town, Gariahat & Dumdum.`;
-  const canonicalUrl = `https://www.blissbiteskol.com/product/${slug}`;
+  const title = `${product.title} | Eggless ${product.category} in Kolkata | Same-Day Delivery`;
+  const description = `Buy ${product.title} online in Kolkata. 100% eggless cake starting at ₹${startingPrice}. Same-day cake delivery in Salt Lake, New Town, Dumdum & Gariahat. Order now from Bliss Bites Bakery.`;
 
   return {
+    metadataBase: new URL("https://bliss-bites-bakery.vercel.app"),
+
     title,
     description,
+
     alternates: {
       canonical: canonicalUrl,
     },
+
     openGraph: {
       title,
       description,
@@ -47,36 +50,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? [
             {
               url: primaryImage,
-              width: 800,
-              height: 800,
-              alt: `${product.title} – Eggless Cake Delivery in Kolkata`,
+              width: 1000,
+              height: 1000,
+              alt: `${product.title} - Eggless Cake in Kolkata`,
             },
           ]
         : [],
     },
+
     twitter: {
       card: "summary_large_image",
       title,
       description,
       images: primaryImage ? [primaryImage] : [],
     },
+
     keywords: [
       product.title,
-      "eggless cake Kolkata",
-      "cake delivery Kolkata",
+      `${product.title} Kolkata`,
+      `eggless ${product.category} Kolkata`,
+      "eggless cake delivery Kolkata",
       "same day cake delivery Kolkata",
-      "eggless cake delivery",
-      "online cake order Kolkata",
+      "birthday cake Kolkata",
+      "photo cake Kolkata",
+      "custom cake Kolkata",
       "Salt Lake cake delivery",
       "New Town cake delivery",
-      "Gariahat cake",
-      "Dumdum cake",
-      "custom cake Kolkata",
-      product.category,
+      "Dumdum cake delivery",
       "Bliss Bites Bakery",
     ],
+
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
+
 
 // ─── Page Component ───────────────────────────────────────────────────────────
 

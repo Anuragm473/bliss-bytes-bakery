@@ -35,16 +35,34 @@ const ItemListSchema = ({ products }: { products: any[] }) => (
         "@context": "https://schema.org",
         "@type": "ItemList",
         name: "Eggless Cakes in Kolkata",
-        itemListElement: products.map((p, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          url: `https://blissbitesbackery.in/product/${p.slug}`,
-          name: p.title,
-        })),
+        description:
+          "Premium eggless cakes with same-day delivery across Kolkata.",
+        itemListElement: products.map((p, i) => {
+          const sizes = p.sizes as Record<string, number>;
+          const price = Math.min(...Object.values(sizes));
+
+          return {
+            "@type": "ListItem",
+            position: i + 1,
+            url: `https://bliss-bites-bakery.vercel.app/product/${p.slug}`,
+            item: {
+              "@type": "Product",
+              name: p.title,
+              image: p.images?.[0],
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "INR",
+                price: price,
+                availability: "https://schema.org/InStock",
+              },
+            },
+          };
+        }),
       }),
     }}
   />
 );
+
 
 // ─── Trust strip items ────────────────────────────────────────────────────────
 const TRUST = [
@@ -282,6 +300,10 @@ const min = Math.min(...sizeValues);
             </div>
           </div>
         </section>
+        <p className="mt-4 text-sm text-center font-medium" style={{ color: "#E8577A" }}>
+🔥 38 cakes delivered in Kolkata today
+</p>
+
 
         {/* ══════════════════════════════════════════════════
             TRUST STRIP
@@ -554,7 +576,7 @@ const min = Math.min(...sizeValues);
                             "translateY(0)";
                         }}
                       >
-                        View Details →
+                        Order Now →
                       </Link>
                     </div>
                   </article>
@@ -762,9 +784,64 @@ const min = Math.min(...sizeValues);
             Order Now →
           </Link>
         </div>
+       <div className="mt-12 rounded-3xl p-6 md:p-10 
+                bg-gradient-to-br from-[#FFF0F3] to-[#FFE4E8] 
+                border border-[#FADADD] 
+                shadow-[0_8px_30px_rgba(232,87,122,0.08)]
+                text-center">
+
+  <p className="text-[15px] md:text-[17px] leading-relaxed text-[#5C3048] max-w-2xl mx-auto">
+    Looking for something truly{" "}
+    <span className="font-semibold text-[#E8577A]">
+      personalised
+    </span>
+    ? Design your own cake with custom flavours, names, messages, or photo prints —
+    crafted fresh and delivered anywhere in Kolkata.
+  </p>
+
+  <p className="mt-2 text-xs md:text-sm font-semibold text-[#C06C84]">
+    ✨ Same-day custom cake delivery available (Order before 4 PM)
+  </p>
+
+  <Link
+    href="/customize-cake"
+    className="inline-block mt-6 px-8 py-3 rounded-2xl 
+               bg-gradient-to-r from-[#E8577A] to-[#F7A072] 
+               text-white font-bold text-sm md:text-base 
+               shadow-[0_6px_20px_rgba(232,87,122,0.25)] 
+               hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(232,87,122,0.35)]
+               transition-all duration-300"
+  >
+    🎂 Customize Your Cake →
+  </Link>
+
+</div>
+
+
 
         {/* Bottom padding for sticky bar */}
         <div className="sm:hidden h-20" />
+        <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      name: "Bliss Bites Bakery",
+      telephone: "+91 9123743680",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Kolkata",
+        addressRegion: "West Bengal",
+        addressCountry: "IN",
+      },
+      priceRange: "₹500-₹1000",
+      areaServed: "Kolkata",
+      url: "https://bliss-bites-bakery.vercel.app",
+    }),
+  }}
+/>
+
       </div>
     </>
   );

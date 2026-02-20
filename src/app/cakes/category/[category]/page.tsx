@@ -199,15 +199,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = CATEGORY_META[category as CategorySlug];
   if (!meta) return {};
 
+  const baseUrl = "https://bliss-bites-bakery.vercel.app";
+
   return {
-    title: `Eggless ${meta.label} Cakes in Kolkata | Same-Day Delivery | Bliss Bites`,
-    description: `Order eggless ${meta.label.toLowerCase()} cakes in Kolkata. Same-day delivery across Salt Lake, New Town, Dumdum, Gariahat. Starting ₹500. 100% fresh & eggless.`,
+    title: `Eggless ${meta.label} Cakes in Kolkata | Same-Day Delivery Under ₹1000`,
+    description: `Order 100% eggless ${meta.label.toLowerCase()} cakes in Kolkata with same-day delivery. Freshly baked. Delivered in Salt Lake, New Town, Dumdum & Gariahat. Starting ₹500.`,
+    keywords: [
+      `${meta.label.toLowerCase()} cake Kolkata`,
+      `eggless ${meta.label.toLowerCase()} cake Kolkata`,
+      `${meta.label.toLowerCase()} cake delivery Kolkata`,
+      `same day ${meta.label.toLowerCase()} cake Kolkata`,
+      `${meta.label.toLowerCase()} cakes under 1000`,
+      "Bliss Bites Bakery Kolkata",
+    ],
     alternates: {
-      canonical: `https://blissbitesbackery.in/cakes/category/${category}`,
+      canonical: `${baseUrl}/cakes/category/${category}`,
     },
     openGraph: {
-      title: `${meta.label} Cakes in Kolkata — Bliss Bites Bakery`,
-      description: `100% eggless ${meta.label.toLowerCase()} cakes with same-day delivery in Kolkata.`,
+      title: `Eggless ${meta.label} Cakes in Kolkata | Bliss Bites`,
+      description: `Premium eggless ${meta.label.toLowerCase()} cakes delivered across Kolkata. Same-day delivery available.`,
+      url: `${baseUrl}/cakes/category/${category}`,
+      siteName: "Bliss Bites Bakery",
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Eggless ${meta.label} Cakes in Kolkata`,
+      description: `Same-day delivery available across Kolkata. Starting ₹500.`,
     },
   };
 }
@@ -253,17 +272,33 @@ export default async function CategoryPage({ params }: Props) {
     ],
   };
 
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: `Eggless ${meta.label} Cakes in Kolkata`,
-    itemListElement: products.map((p, i) => ({
+ const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `Eggless ${meta.label} Cakes in Kolkata`,
+  itemListElement: products.map((p, i) => {
+    const sizes = p.sizes as Record<string, number>;
+    const price = Math.min(...Object.values(sizes));
+
+    return {
       "@type": "ListItem",
       position: i + 1,
-      url: `https://blissbitesbackery.in/product/${p.slug}`,
-      name: p.title,
-    })),
-  };
+      url: `https://bliss-bites-bakery.vercel.app/product/${p.slug}`,
+      item: {
+        "@type": "Product",
+        name: p.title,
+        image: p.images?.[0],
+        offers: {
+          "@type": "Offer",
+          priceCurrency: "INR",
+          price: price,
+          availability: "https://schema.org/InStock",
+        },
+      },
+    };
+  }),
+};
+
 
   return (
     <>
@@ -276,6 +311,27 @@ export default async function CategoryPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
+      <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Bakery",
+      name: "Bliss Bites Bakery",
+      telephone: "+91 9123743680",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Kolkata",
+        addressRegion: "West Bengal",
+        addressCountry: "IN",
+      },
+      areaServed: "Kolkata",
+      priceRange: "₹500-₹1000",
+      url: "https://bliss-bites-bakery.vercel.app",
+    }),
+  }}
+/>
+
 
       <div
         className="min-h-screen"
@@ -475,6 +531,17 @@ export default async function CategoryPage({ params }: Props) {
             >
               {meta.label} Cake Delivery in Kolkata — Bliss Bites Bakery
             </h2>
+            <p>
+Browse our full{" "}
+<Link href="/cakes" className="font-semibold underline">
+eggless cake collection in Kolkata
+</Link>{" "}
+or design your own on our{" "}
+<Link href="/customize-cake" className="font-semibold underline">
+custom cake order page
+</Link>.
+</p>
+
 
             <div
               className="space-y-5 leading-relaxed"
@@ -585,6 +652,24 @@ export default async function CategoryPage({ params }: Props) {
             </div>
           </div>
         </section>
+        <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: meta.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.a,
+        },
+      })),
+    }),
+  }}
+/>
+
 
         {/* ══════════════════════════════════════════════════
             MOBILE STICKY BOTTOM BAR

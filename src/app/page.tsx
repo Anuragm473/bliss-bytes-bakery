@@ -7,8 +7,61 @@ import { getFeaturedProducts } from "@/src/lib/products";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Same-Day Eggless Cake Delivery in Kolkata | Bliss bites Bakery",
-  description: "Order premium eggless custom cakes under ₹1000 in Kolkata. Same-day delivery in Salt Lake, New Town, Dumdum & more.",
+  metadataBase: new URL("https://bliss-bites-bakery.vercel.app"),
+
+  title:
+    "Eggless Cake Delivery in Kolkata | Same-Day Custom Birthday Cakes | Bliss Bites Bakery",
+
+  description:
+    "Order premium eggless cakes in Kolkata with same-day delivery. Birthday cakes, photo cakes, anniversary cakes & custom cakes under ₹1000. Serving Salt Lake, New Town, Dumdum & all Kolkata.",
+
+  keywords: [
+    "eggless cake kolkata",
+    "cake delivery kolkata",
+    "same day cake delivery kolkata",
+    "birthday cake kolkata",
+    "photo cake kolkata",
+    "custom cake kolkata",
+    "anniversary cake kolkata",
+    "home bakery kolkata",
+    "best bakery in kolkata",
+    "eggless birthday cake kolkata",
+  ],
+
+  alternates: {
+    canonical: "https://bliss-bites-bakery.vercel.app",
+  },
+
+  openGraph: {
+    title: "Eggless Cake Delivery in Kolkata | Bliss Bites Bakery",
+    description:
+      "Premium eggless cakes with same-day delivery in Kolkata. Custom cakes under ₹1000.",
+    url: "https://bliss-bites-bakery.vercel.app",
+    siteName: "Bliss Bites Bakery",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Bliss Bites Bakery - Eggless Cakes Kolkata",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Eggless Cake Delivery in Kolkata",
+    description:
+      "Order custom eggless cakes with same-day delivery in Kolkata.",
+    images: ["/og-image.jpg"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const CATEGORIES = [
@@ -106,7 +159,7 @@ type Product = {
   images: string[];
 };
 
-function ProductCard({ product,index }: { product: Product,index:number }) {
+function ProductCard({ product, index }: { product: Product; index: number }) {
   const startingPrice = Math.min(...Object.values(product.sizes));
 
   const gradients = [
@@ -449,10 +502,9 @@ export default async function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-              {products?.map((product,index) => (
-  <ProductCard key={product.id} product={product} index={index}/>
-))}
-
+              {products?.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
             </div>
 
             <div className="text-center mt-14">
@@ -710,6 +762,55 @@ export default async function HomePage() {
             reserved.
           </p>
         </footer>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Bakery",
+              name: "Bliss Bites Bakery",
+              image: "https://bliss-bites-bakery.vercel.app/logo.png",
+              url: "https://bliss-bites-bakery.vercel.app",
+              telephone: "+919123743680",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Kolkata",
+                addressRegion: "West Bengal",
+                addressCountry: "IN",
+              },
+              areaServed: "Kolkata",
+              priceRange: "₹₹",
+              servesCuisine: "Bakery",
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "Do you offer same-day delivery in Kolkata?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, we offer same-day delivery across Kolkata including Salt Lake, New Town and Dumdum.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Are all cakes 100% eggless?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes, every cake at Bliss Bites Bakery is completely eggless.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </main>
     </>
   );
